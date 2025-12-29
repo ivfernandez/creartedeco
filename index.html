@@ -56,7 +56,7 @@
             margin: 0 auto 10px auto;
         }
 
-        header p { margin: 0; color: #888; font-style: italic; font-size: 0.95rem; }
+        header p { margin: 0; color: var(--rosa-fuerte); font-style: italic; font-size: 1.0rem; }
 
         /* GRID DE 5 COLUMNAS */
         .categories-grid {
@@ -87,8 +87,21 @@
             min-height: 50px;
         }
 
-        .cat-card i { color: var(--rosa-fuerte); width: 18px; height: 18px; flex-shrink: 0; }
+        .cat-card i { width: 18px; height: 18px; flex-shrink: 0; }
         .cat-card h3 { font-size: 1.1rem; font-weight: 500; margin: 0; text-align: center; }
+
+        .cat-card i, .cat-card svg { 
+            stroke: var(--rosa-fuerte) !important; /* Lucide usa 'stroke' para el color, no 'color' */
+            color: var(--rosa-fuerte) !important; 
+            width: 25px; 
+            height: 25px; 
+            flex-shrink: 0; 
+        }
+
+        .cat-card:hover {
+            transform: scale(1.05); /* El icono se agranda un poquito */
+            transition: transform 0.2s ease;
+        }
 
         /* GALERÍA */
         #gallery-section {
@@ -149,7 +162,7 @@
         #btn-top { background: var(--rosa-fuerte); color: white; width: 40px; height: 40px; border-radius: 50%; display: none; justify-content: center; align-items: center; text-decoration: none; }
 
         footer { text-align: center; padding: 30px; background: var(--rosa-pastel); color: var(--rosa-fuerte); margin-top: 50px; }
-        .footer-insta { display: inline-flex; align-items: center; gap: 8px; color: var(--instagram); text-decoration: none; font-weight: 600; margin-bottom: 5px; }
+        .footer-insta { display: inline-flex; align-items: center; gap: 8px; color: var(--rosa-fuerte); text-decoration: none; font-weight: 500; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -167,7 +180,10 @@
             Instagram
         </a>
         <div class="logo-container"><img src="img/logo.png" alt="Crearte Deco"></div>
-        <p>Papelería creativa para tus eventos más lindos</p>
+        <p style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+            Papelería creativa personalizada para hacer tus eventos más lindos by Mica 
+            <i data-lucide="heart" style="width: 16px; height: 16px; color: var(--rosa-fuerte); fill: var(--rosa-fuerte);"></i>
+        </p>
     </header>
 
     <div class="categories-grid">
@@ -190,7 +206,7 @@
     </div>
 
     <div class="extra-section">
-        <h2 class="section-title">Testimonios ✨</h2>
+        <h2 class="section-title">Nuestros clientes ✨</h2>
         <div class="testimonials-slider">
             <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+1'"></div>
             <div class="testimonial-img-wrapper"><img src="img/testimonio2.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+2'"></div>
@@ -250,9 +266,9 @@
 
     <footer>
         <a href="https://www.instagram.com/creartedeco.mg" class="footer-insta" target="_blank">
-            Seguinos en Instagram @creartedeco.mg ✨
+            Seguinos en Instagram @creartedeco.mg <i data-lucide="heart" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i>
         </a>
-        <p>© <span id="year"></span> Crearte Deco - Hecho con amor</p>
+        <p>© <span id="year"></span> Crearte Deco</p>
     </footer>
 
     <script>
