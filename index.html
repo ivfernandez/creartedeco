@@ -10,10 +10,10 @@
 
     <style>
         :root {
-            --rosa-fuerte: #ff8b94;
-            --rosa-pastel: #ffeadb;
+            --rosa-fuerte: #a91b60;
+            --rosa-pastel: #ec9ec0;
             --texto: #4a4a4a;
-            --blanco: #ffffff;
+            --blanco: #fbfde6;
             --whatsapp: #25d366;
             --instagram: #E1306C;
         }
@@ -22,7 +22,7 @@
             font-family: 'Fredoka', sans-serif;
             font-weight: 400;
             margin: 0;
-            background: radial-gradient(circle, #ffffff 0%, #fff5f0 100%);
+            background: radial-gradient(circle, #fffef1 0%, #fff5f0 100%);
             color: var(--texto);
             scroll-behavior: smooth;
         }
@@ -155,7 +155,7 @@
 
     <div class="floating-container">
         <a href="#top" id="btn-top"><i data-lucide="chevron-up"></i></a>
-        <a href="https://wa.me/541130087815?text=¡Hola! Quería hacer una consulta general ✨" class="wa-float" target="_blank">
+        <a href="https://wa.me/541141575016?text=¡Hola! Quería hacer una consulta general ✨" class="wa-float" target="_blank">
             <svg width="35" height="35" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.982-.363-1.734-.748-2.856-2.505-2.942-2.62-.087-.114-.712-.951-.712-1.815 0-.865.457-1.29.621-1.464.164-.174.357-.217.476-.217.119 0 .238.001.341.005.111.004.259-.042.405.31.147.357.5 1.223.543 1.31.043.087.072.188.014.304-.058.116-.087.188-.174.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.777 1.394.864.174.088.275.073.377-.043.101-.116.434-.506.549-.68.116-.174.232-.145.39-.087s1.011.477 1.184.564c.174.087.289.13.332.202.045.072.045.419-.1.824zM12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 21.82c-1.785 0-3.52-.416-5.074-1.21l-4.482 1.177 1.198-4.37c-.886-1.579-1.353-3.374-1.353-5.216 0-5.415 4.406-9.82 9.823-9.82 5.413 0 9.819 4.406 9.819 9.82s-4.406 9.82-9.823 9.82z"/></svg>
         </a>
     </div>
@@ -213,7 +213,7 @@
                             <a href="https://www.instagram.com/creartedeco.mg" target="_blank" style="text-decoration: none; color: #E1306C; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
                                 <i data-lucide="instagram" style="width: 16px; height: 16px;"></i> Instagram
                             </a>
-                            <a href="https://wa.me/541130087815" target="_blank" style="text-decoration: none; color: #25d366; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
+                            <a href="https://wa.me/541141575016" target="_blank" style="text-decoration: none; color: #25d366; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
                                 <i data-lucide="message-circle" style="width: 16px; height: 16px;"></i> WhatsApp
                             </a>
                         </div>
@@ -278,7 +278,7 @@
             const waLink = document.getElementById('whatsapp-link');
             document.getElementById('gallery-title').innerText = nombres[cat];
             content.innerHTML = "";
-            waLink.href = `https://wa.me/541130087815?text=${encodeURIComponent('¡Hola! Consulto por: ' + nombres[cat])}`;
+            waLink.href = `https://wa.me/541141575016?text=${encodeURIComponent('¡Hola! Consulto por: ' + nombres[cat])}`;
             if(stock[cat]) {
                 stock[cat].forEach(url => {
                     const div = document.createElement('div');
