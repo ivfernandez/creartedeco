@@ -58,18 +58,43 @@
 
         header p { margin: 0; color: var(--rosa-fuerte); font-style: italic; font-size: 1.0rem; }
 
-        /* GRID DE 5 COLUMNAS */
+        /* --- GRID PARA DESKTOP --- */
         .categories-grid {
             max-width: 1200px;
-            margin: 30px auto;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(5, 1fr); 
+            grid-template-columns: repeat(5, 1fr);
             gap: 12px;
-            padding: 0 20px;
+            padding: 20px; /* Padding generoso cuando está arriba */
+            transition: all 0.3s ease;
         }
 
         @media (max-width: 1024px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 600px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        @media (max-width: 600px) {
+            /* Achicamos un poco el padding del contenedor cuando está en móvil */
+            .categories-container {
+                padding: 5px 0;
+                gap: 8px;
+            }
+            
+            /* Achicamos las tarjetas para que no roben tanta pantalla */
+            .cat-card {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+        }
+
+        .categories-container.is-sticky .categories-grid {
+            padding: 10px 20px; /* Achicamos el margen interno */
+            gap: 8px;
+        }
+
+        .categories-container.is-sticky .cat-card {
+            padding: 6px 10px; /* Las tarjetas se vuelven más bajitas */
+            min-height: 40px;
+        }
 
         .cat-card {
             background: var(--blanco);
@@ -144,7 +169,7 @@
 
         .testimonials-slider::-webkit-scrollbar { display: none; } /* Escondemos la barra en Chrome/Safari */
 
-        testimonial-card {
+        .testimonial-card {
             flex: 0 0 280px; /* Tamaño ideal para móvil y desktop */
             scroll-snap-align: center;
             background: white;
@@ -358,20 +383,16 @@
             cursor: pointer !important;
         }
 
+        /* --- CONTENEDOR PRINCIPAL STICKY --- */
         .categories-container {
-            position: -webkit-sticky; /* Soporte para Safari */
+            position: -webkit-sticky;
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
-            backdrop-filter: blur(8px); /* Desenfoque de fondo tipo iPhone */
-            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             z-index: 1000;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            border-bottom: 1px solid var(--rosa-pastel);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-bottom: 2px solid var(--rosa-pastel);
+            transition: all 0.3s ease; /* Para que el cambio al bajar sea suave */
         }
 
         /* Estilo para el botón cuando está ACTIVO */
@@ -382,6 +403,38 @@
             font-weight: bold;
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(169, 27, 96, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 10px 15px; /* Menos padding vertical */
+                gap: 8px; /* Hueco más chico entre tarjetas */
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .cat-card {
+                flex: 0 0 auto;
+                width: 110px; /* Ancho fijo más chico para que entren más en pantalla */
+                min-height: 45px; /* Altura controlada */
+                padding: 6px 8px; /* Menos espacio interno */
+                flex-direction: column; /* Icono arriba y texto abajo suele ahorrar ancho */
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .cat-card h3 { 
+                font-size: 0.75rem; /* Fuente más pequeña y compacta */
+                line-height: 1.1;
+            }
+
+            .cat-card i, .cat-card svg { 
+                width: 16px !important; 
+                height: 16px !important; 
+            }
         }
 
 </style>
@@ -407,17 +460,19 @@
         </p>
     </header>
 
-    <div class="categories-grid">
-        <div class="cat-card" onclick="showGallery('marcos', this)"><i data-lucide="image"></i><h3>Marcos de selfie</h3></div>
-        <div class="cat-card" onclick="showGallery('props', this)"><i data-lucide="party-popper"></i><h3>Props para fotos</h3></div>
-        <div class="cat-card" onclick="showGallery('toppers', this)"><i data-lucide="cake"></i><h3>Toppers</h3></div>
-        <div class="cat-card" onclick="showGallery('banderines', this)"><i data-lucide="flag"></i><h3>Banderines</h3></div>
-        <div class="cat-card" onclick="showGallery('pochocoleras', this)"><i data-lucide="box"></i><h3>Pochocoleras</h3></div>
-        <div class="cat-card" onclick="showGallery('bolsitas', this)"><i data-lucide="shopping-bag"></i><h3>Bolsitas</h3></div>
-        <div class="cat-card" onclick="showGallery('guirnaldas', this)"><i data-lucide="sparkles"></i><h3>Guirnaldas</h3></div>
-        <div class="cat-card" onclick="showGallery('stickers', this)"><i data-lucide="smile"></i><h3>Stickers</h3></div>
-        <div class="cat-card" onclick="showGallery('tattoos', this)"><i data-lucide="palette"></i><h3>Tattoos</h3></div>
-        <div class="cat-card" onclick="showGallery('tarjetas', this)"><i data-lucide="id-card-lanyard"></i><h3>Tarjetas de invitación</h3></div>
+    <div class="categories-container">
+        <div class="categories-grid">
+            <div class="cat-card" onclick="showGallery('marcos', this)"><i data-lucide="image"></i><h3>Marcos de selfie</h3></div>
+            <div class="cat-card" onclick="showGallery('props', this)"><i data-lucide="party-popper"></i><h3>Props para fotos</h3></div>
+            <div class="cat-card" onclick="showGallery('toppers', this)"><i data-lucide="cake"></i><h3>Toppers</h3></div>
+            <div class="cat-card" onclick="showGallery('banderines', this)"><i data-lucide="flag"></i><h3>Banderines</h3></div>
+            <div class="cat-card" onclick="showGallery('pochocoleras', this)"><i data-lucide="box"></i><h3>Pochocoleras</h3></div>
+            <div class="cat-card" onclick="showGallery('bolsitas', this)"><i data-lucide="shopping-bag"></i><h3>Bolsitas</h3></div>
+            <div class="cat-card" onclick="showGallery('guirnaldas', this)"><i data-lucide="sparkles"></i><h3>Guirnaldas</h3></div>
+            <div class="cat-card" onclick="showGallery('stickers', this)"><i data-lucide="smile"></i><h3>Stickers</h3></div>
+            <div class="cat-card" onclick="showGallery('tattoos', this)"><i data-lucide="palette"></i><h3>Tattoos</h3></div>
+            <div class="cat-card" onclick="showGallery('tarjetas', this)"><i data-lucide="id-card-lanyard"></i><h3>Tarjetas de invitación</h3></div>
+        </div>
     </div>
 
     <div id="gallery-section">
@@ -733,6 +788,16 @@
         modalElement.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
             checkDirection();
+        });
+
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.categories-container');
+            // Si bajamos más de 150px, agregamos la clase 'is-sticky'
+            if (window.scrollY > 150) {
+                nav.classList.add('is-sticky');
+            } else {
+                nav.classList.remove('is-sticky');
+            }
         });
     </script>
 </body>
