@@ -133,10 +133,51 @@
         .testimonials-slider {
             display: flex;
             overflow-x: auto;
-            gap: 15px;
+            gap: 20px;
+            padding: 20px 10px;
+            scroll-snap-type: x mandatory; /* Para que las fotos encajen al deslizar */
+            scrollbar-width: none; /* Escondemos la barra en Firefox */
+        }
+
+        .testimonials-slider::-webkit-scrollbar { display: none; } /* Escondemos la barra en Chrome/Safari */
+
+        testimonial-card {
+            flex: 0 0 280px; /* Tamaño ideal para móvil y desktop */
+            scroll-snap-align: center;
+            background: white;
             padding: 10px;
-            scroll-snap-type: x mandatory; /* Hace que las fotos encajen */
-            -webkit-overflow-scrolling: touch;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--rosa-pastel);
+            position: relative;
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px) rotate(2deg); /* Efecto de foto pegada */
+        }
+
+        .testimonial-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .testimonial-badge {
+            position: absolute;
+            bottom: 25px;
+            right: -10px;
+            background: var(--rosa-fuerte);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
+            transform: rotate(-5deg);
+            pointer-events: none;
         }
 
         testimonial-img-wrapper {
@@ -283,6 +324,10 @@
             cursor: pointer !important;
         }
 
+        #wa-share {
+            transition: background 0.4s ease, transform 0.2s ease;
+        }
+
         @keyframes fadeInImage {
             from { opacity: 0.4; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
@@ -352,12 +397,28 @@
     </div>
 
     <div class="extra-section">
-        <h2 class="section-title">Nuestros clientes ✨</h2>
+    <h2 class="section-title">Clientes Felices ✨</h2>
+    <p style="text-align: center; margin-top: -15px; color: var(--texto); font-style: italic;">
+        Gracias por dejarnos ser parte de sus festejos
+    </p>
+    
         <div class="testimonials-slider">
-            <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+1'"></div>
-            <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+2'"></div>
-            <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+3'"></div>
+            <div class="testimonial-card" onclick="openTestimonioModal(0)">
+                <img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/280x400?text=Testimonio+1'">
+                <div class="testimonial-badge">¡Amamos el resultado! 😍</div>
+            </div>
+
+            <div class="testimonial-card" onclick="openTestimonioModal(1)">
+                <img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/280x400?text=Testimonio+2'">
+                <div class="testimonial-badge">Súper prolijo ✨</div>
+            </div>
+
+            <div class="testimonial-card" onclick="openTestimonioModal(2)">
+                <img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/280x400?text=Testimonio+3'">
+                <div class="testimonial-badge">¡Tal cual lo soñé! ❤️</div>
+            </div>
         </div>
+
     </div>
 
     <div class="extra-section">
@@ -457,7 +518,8 @@
             guirnaldas: ["img/guirnalda1.jpg"],
             stickers: ["img/stickers1.jpg"],
             tattoos: ["img/tattoos1.jpg"],
-            tarjetas: ["img/tarjetas.jpg"]
+            tarjetas: ["img/tarjetas.jpg"],
+            testimonios: ["img/testimonio1.jpg", "img/testimonio1.jpg", "img/testimonio1.jpg"]
         };
 
         const nombres = { 
@@ -470,7 +532,8 @@
             guirnaldas: "Guirnaldas Decorativas", 
             stickers: "Stickers Personalizados", 
             tattoos: "Tattoos Temporales", 
-            tarjetas: "Tarjetas de invitación" 
+            tarjetas: "Tarjetas de invitación",
+            testimonios: "Experiencias de nuestros clientes"
         };
 
         // 3. Función para mostrar la categoría seleccionada
@@ -535,12 +598,26 @@
             
             const contador = `(${currentIndex + 1}/${currentImages.length})`;
             captionElement.innerText = `${currentCatName} ${contador}`;
-            
-            // Construcción de link de WhatsApp
-            const urlAbsoluta = window.location.origin + window.location.pathname.replace('index.html', '') + url;
-            const mensaje = `¡Hola Mica! ✨ Me gustó este trabajo de "${currentCatName}" que vi en tu catálogo web: ${urlAbsoluta}`;
-            waShare.href = `https://wa.me/541141575016?text=${encodeURIComponent(mensaje)}`;
 
+            // --- LÓGICA DE BOTÓN DINÁMICO ---
+            if (currentCatName === nombres.testimonios) {
+                // Estilo para TESTIMONIOS (Más emocional)
+                waShare.style.background = "#e91e63"; // Un rosa más vibrante/corazón
+                waShare.innerHTML = `<i data-lucide="heart"></i> ¡Quiero algo así para mi evento!`;
+                
+                const msg = `¡Hola Mica! ✨ Vi las fotos de tus clientes en la web y me encantaron. Me gustaría consultarte para armar un pedido personalizado para un evento...`;
+                waShare.href = `https://wa.me/541141575016?text=${encodeURIComponent(msg)}`;
+            } else {
+                // Estilo para PRODUCTOS (Consulta técnica)
+                waShare.style.background = "#25d366"; // Verde WhatsApp estándar
+                waShare.innerHTML = `<i data-lucide="message-circle"></i> Consultar por esta foto`;
+                
+                const urlAbsoluta = window.location.origin + window.location.pathname.replace('index.html', '') + url;
+                const msg = `¡Hola Mica! ✨ Me gustó este trabajo de "${currentCatName}" que vi en tu catálogo web: ${urlAbsoluta}`;
+                waShare.href = `https://wa.me/541141575016?text=${encodeURIComponent(msg)}`;
+            }
+
+            // Reiniciar animación y refrescar íconos de Lucide
             void imgElement.offsetWidth; 
             imgElement.classList.add('fade-in');
             lucide.createIcons();
@@ -555,6 +632,15 @@
             if (event.target !== modalContent && !isNavButton && !isWhatsApp) {
                 closeModal();
             }
+        }
+
+        function openTestimonioModal(index) {
+            // Cambiamos el contexto de las imágenes a 'testimonios'
+            currentImages = stock.testimonios;
+            currentCatName = nombres.testimonios;
+            
+            // Usamos la función que ya teníamos para abrirlo
+            openModal(index);
         }
 
         // 6. Navegación por teclado y scroll
