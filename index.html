@@ -224,8 +224,11 @@
 
         .nav-btn {
             position: absolute;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
+            top: 50%; /* Centrado vertical */
+            transform: translateY(-50%); /* Ajuste perfecto para que el centro del botón sea el centro de la imagen */
+            background: rgba(169, 27, 96, 0.8); /* Rosa fuerte con buena opacidad */
+            backdrop-filter: blur(4px); /* Efecto profesional de desenfoque de fondo */
+            border: 2px solid white; /* Bordecito blanco para que resalte sobre fotos oscuras */
             color: white;
             width: 50px;
             height: 50px;
@@ -234,25 +237,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s;
+            transition: all 0.2s ease;
             z-index: 2010;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .nav-btn:hover {
             background: var(--rosa-fuerte);
+            transform: translateY(-50%) scale(1.1); /* Mantiene el centrado al agrandarse */
         }
 
-        .nav-btn i {
-            width: 32px;
-            height: 32px;
-        }
-
-        /* En celulares las acercamos un poquito más */
+        /* AJUSTE ESPECÍFICO PARA CELULARES */
         @media (max-width: 600px) {
             .nav-btn {
-                width: 40px;
-                height: 40px;
-                background: rgba(169, 27, 96, 0.7); /* Rosa fuerte con transparencia */
+                width: 42px; /* Un poquito más chicas para no invadir tanto */
+                height: 42px;
+                background: rgba(169, 27, 96, 0.9); /* Casi sólidas en móvil */
+            }
+
+            /* Las pegamos un poquito más a los bordes en el celu para que no pisen el centro de la foto */
+            .nav-btn[style*="left: 10px;"] {
+                left: 5px !important;
+            }
+            .nav-btn[style*="right: 10px;"] {
+                right: 5px !important;
             }
         }
 
@@ -566,6 +574,26 @@
                 btn.style.display = "none"; 
             }
         };
+
+        // Variable para detectar el inicio del toque
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        function checkDirection() {
+            if (touchendX < touchstartX - 50) changeImg(1);  // Deslizó a la izquierda
+            if (touchendX > touchstartX + 50) changeImg(-1); // Deslizó a la derecha
+        }
+
+        const modalElement = document.getElementById('imageModal');
+
+        modalElement.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        modalElement.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            checkDirection();
+        });
     </script>
 </body>
 </html>
