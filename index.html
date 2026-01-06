@@ -135,11 +135,15 @@
             overflow-x: auto;
             gap: 15px;
             padding: 10px;
-            scrollbar-width: none;
-            justify-content: center;
+            scroll-snap-type: x mandatory; /* Hace que las fotos encajen */
+            -webkit-overflow-scrolling: touch;
         }
 
-        .testimonial-img-wrapper { flex: 0 0 200px; max-width: 200px; }
+        testimonial-img-wrapper {
+            flex: 0 0 250px; /* Un poco más ancho para que se luzca */
+            scroll-snap-align: center;
+        }
+
         .testimonial-img-wrapper img {
             width: 100%; height: 350px; object-fit: cover;
             border-radius: 15px; border: 3px solid var(--rosa-pastel);
@@ -149,7 +153,17 @@
         summary { font-weight: 500; font-size: 1rem; color: var(--texto); display: flex; justify-content: space-between; align-items: center; }
 
         /* WHATSAPP Y TOP BUTTON */
-        .floating-container { position: fixed; bottom: 80px; right: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 1000; }
+        .floating-container { 
+            position: fixed; 
+            bottom: 90px; /* Altura suficiente para no tapar el footer */
+            right: 20px; 
+            display: flex; 
+            flex-direction: row-reverse; /* El de WhatsApp queda a la derecha y el de arriba a su izquierda */
+            align-items: center;    
+            gap: 15px; /* Espacio entre los dos botones */
+            z-index: 1000; 
+        }
+
         .wa-float {
             width: 60px; height: 60px;
             background-color: #25d366;
@@ -159,11 +173,135 @@
             transition: transform 0.3s;
         }
         .wa-float:hover { transform: scale(1.1); }
-        #btn-top { background: var(--rosa-fuerte); color: white; width: 40px; height: 40px; border-radius: 50%; display: none; justify-content: center; align-items: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        #btn-top { 
+            background: var(--rosa-fuerte); 
+            color: white; 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            display: none; /* Solo aparece al hacer scroll */
+            justify-content: center; 
+            align-items: center; 
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        #btn-top:hover {
+            transform: scale(1.1);
+        }
 
         footer { text-align: center; padding: 30px; background: var(--rosa-pastel); color: var(--rosa-fuerte); margin-top: 50px; }
         .footer-insta { display: inline-flex; align-items: center; gap: 8px; color: var(--rosa-fuerte); text-decoration: none; font-weight: 500; margin-bottom: 5px; }
-    </style>
+
+        .cat-card.active {
+            background-color: var(--rosa-pastel);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(169, 27, 96, 0.2);
+        }
+
+        .cat-card.active i, .cat-card.active svg {
+            stroke: white !important;
+            color: white !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-item {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .gallery-item img:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
+            transition: 0.3s;
+        }
+
+        .nav-btn {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 2010;
+        }
+
+        .nav-btn:hover {
+            background: var(--rosa-fuerte);
+        }
+
+        .nav-btn i {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* En celulares las acercamos un poquito más */
+        @media (max-width: 600px) {
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                background: rgba(169, 27, 96, 0.7); /* Rosa fuerte con transparencia */
+            }
+        }
+
+        /* El cursor de "cerrar" (la lupita con el menos) queda muy pro */
+        #imageModal {
+            cursor: zoom-out !important;
+        }
+
+        /* La imagen principal no hace nada al hacerle clic, así que cursor normal */
+        #imgAmpliada {
+            cursor: default !important;;
+        }
+
+        /* Los botones y flechas mantienen la manito de "acción" */
+        .nav-btn, 
+        .nav-btn *, 
+        #wa-share, 
+        #wa-share *, 
+        #imageModal span {
+            cursor: pointer !important;
+        }
+
+        @keyframes fadeInImage {
+            from { opacity: 0.4; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeInImage 0.4s ease-out;
+        }
+
+        #imgAmpliada {
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        /* Esto hace que el icono no interfiera con el clic del botón */
+        .nav-btn i, 
+        .nav-btn svg, 
+        .nav-btn path {
+            pointer-events: none;
+        }
+
+        /* Aseguramos que el botón sea el que reciba el puntero */
+        .nav-btn {
+            pointer-events: auto;
+            cursor: pointer !important;
+        }
+
+</style>
 </head>
 <body>
 
@@ -209,8 +347,8 @@
         <h2 class="section-title">Nuestros clientes ✨</h2>
         <div class="testimonials-slider">
             <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+1'"></div>
-            <div class="testimonial-img-wrapper"><img src="img/testimonio2.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+2'"></div>
-            <div class="testimonial-img-wrapper"><img src="img/testimonio3.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+3'"></div>
+            <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+2'"></div>
+            <div class="testimonial-img-wrapper"><img src="img/testimonio1.jpg" onerror="this.src='https://via.placeholder.com/200x350?text=Testimonio+3'"></div>
         </div>
     </div>
 
@@ -264,6 +402,25 @@
         </details>
     </div>
 
+    <div id="imageModal" onclick="closeModalOnOutsideClick(event)" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); transition: 0.3s; cursor: pointer;">
+        <span onclick="closeModal()" style="position: absolute; top: 15px; right: 25px; color: white; font-size: 40px; cursor: pointer; z-index: 2005; background: rgba(0,0,0,0.3); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">&times;</span>
+        <div style="position: relative; max-width: 900px; margin: auto; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">    
+            <div style="position: relative; width: 100%; display: flex; align-items: center; justify-content: center;">
+                <button type="button" onclick="changeImg(-1); event.stopPropagation();" class="nav-btn" style="left: 10px;">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <img id="imgAmpliada" style="max-width: 100%; max-height: 70vh; border: 4px solid white; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+                <button onclick="changeImg(1)" class="nav-btn" style="right: 10px;">
+                    <i data-lucide="chevron-right"></i>
+                </button>
+            </div>
+            <div id="caption" style="color: white; margin-top: 15px; font-size: 1.1rem; text-shadow: 1px 1px 2px black;"></div>
+            <a id="wa-share" href="#" target="_blank" style="margin-top: 20px; background: #25d366; color: white; padding: 12px 24px; border-radius: 50px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 500;">
+                <i data-lucide="message-circle" size="18"></i> Consultar por esta foto
+            </a>
+        </div>
+</div>
+
     <footer>
         <a href="https://www.instagram.com/creartedeco.mg" class="footer-insta" target="_blank">
             Seguinos en Instagram @creartedeco.mg <i data-lucide="heart" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle;"></i>
@@ -272,9 +429,16 @@
     </footer>
 
     <script>
+        // VARIABLES GLOBALES (Fundamentales para las flechas)
+        let currentImages = []; 
+        let currentIndex = 0;   
+        let currentCatName = "";
+
+        // 1. Inicializar iconos y año
         lucide.createIcons();
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        // 2. Datos de los productos
         const stock = {
             carteles: ["img/cartel1.png", "img/cartel2.png"],
             props: ["img/props1.jpg"],
@@ -287,30 +451,120 @@
             tattoos: ["img/tattoos1.jpg"],
             tarjetas: ["img/tarjetas.jpg"]
         };
-        const nombres = { carteles: "Marcos de Selfie", props: "Props para Fotos", toppers: "Toppers para Tortas", banderines: "Banderines 3D", pochocoleras: "Pochocoleras", bolsitas: "Bolsitas Golosineras", guirnaldas: "Guirnaldas Decorativas", stickers: "Stickers Personalizados", tattoos: "Tattoos Temporales", tarjetas: "Tarjetas de invitación (físicas o digitales)" };
 
+        const nombres = { 
+            carteles: "Marcos de Selfie", 
+            props: "Props para Fotos", 
+            toppers: "Toppers para Tortas", 
+            banderines: "Banderines 3D", 
+            pochocoleras: "Pochocoleras", 
+            bolsitas: "Bolsitas Golosineras", 
+            guirnaldas: "Guirnaldas Decorativas", 
+            stickers: "Stickers Personalizados", 
+            tattoos: "Tattoos Temporales", 
+            tarjetas: "Tarjetas de invitación" 
+        };
+
+        // 3. Función para mostrar la categoría seleccionada
         function showGallery(cat) {
             const section = document.getElementById('gallery-section');
             const content = document.getElementById('gallery-content');
             const waLink = document.getElementById('whatsapp-link');
-            document.getElementById('gallery-title').innerText = nombres[cat];
+            
+            // Guardamos los datos en las globales para que las flechas las encuentren
+            currentCatName = nombres[cat];
+            currentImages = stock[cat] || [];
+            
+            document.getElementById('gallery-title').innerText = currentCatName;
             content.innerHTML = "";
-            waLink.href = `https://wa.me/541141575016?text=${encodeURIComponent('¡Hola! Consulto por: ' + nombres[cat])}`;
-            if(stock[cat]) {
-                stock[cat].forEach(url => {
-                    const div = document.createElement('div');
-                    div.className = 'gallery-item';
-                    div.innerHTML = `<img src="${url}" onerror="this.src='https://via.placeholder.com/300x400?text=Próximamente'">`;
-                    content.appendChild(div);
-                });
-            }
+            
+            // Botón de WhatsApp general de la sección
+            waLink.href = `https://wa.me/541141575016?text=${encodeURIComponent('¡Hola! Consulto por: ' + currentCatName)}`;
+            
+            // Generar las fotos en la cuadrícula
+            currentImages.forEach((url, index) => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                // IMPORTANTE: Aquí pasamos el index a openModal
+                div.innerHTML = `<img src="${url}" onclick="openModal(${index})" onerror="this.src='https://via.placeholder.com/300x400?text=Próximamente'" style="cursor: zoom-in;">`;
+                content.appendChild(div);
+            });
+
             section.style.display = "block";
             section.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 4. Funciones del Modal
+        function openModal(index) {
+            currentIndex = index;
+            document.getElementById("imageModal").style.display = "block";
+            updateModal();
+        }
+
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+        function changeImg(step) {
+            // Sumamos o restamos al índice actual
+            currentIndex += step;
+            
+            // Si llegamos al final, volvemos al principio (y viceversa)
+            if (currentIndex >= currentImages.length) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = currentImages.length - 1;
+            
+            updateModal();
+        }
+
+        function updateModal() {
+            const url = currentImages[currentIndex];
+            const imgElement = document.getElementById("imgAmpliada");
+            const captionElement = document.getElementById("caption");
+            const waShare = document.getElementById("wa-share");
+
+            imgElement.classList.remove('fade-in');
+            imgElement.src = url;
+            
+            const contador = `(${currentIndex + 1}/${currentImages.length})`;
+            captionElement.innerText = `${currentCatName} ${contador}`;
+            
+            // Construcción de link de WhatsApp
+            const urlAbsoluta = window.location.origin + window.location.pathname.replace('index.html', '') + url;
+            const mensaje = `¡Hola Mica! ✨ Me gustó este trabajo de "${currentCatName}" que vi en tu catálogo web: ${urlAbsoluta}`;
+            waShare.href = `https://wa.me/541141575016?text=${encodeURIComponent(mensaje)}`;
+
+            void imgElement.offsetWidth; 
+            imgElement.classList.add('fade-in');
+            lucide.createIcons();
+        }
+
+        function closeModalOnOutsideClick(event) {
+            const modalContent = document.getElementById("imgAmpliada");
+            const isNavButton = event.target.closest('.nav-btn');
+            const isWhatsApp = event.target.closest('#wa-share');
+
+            // Solo cerramos si el clic NO fue en la imagen, NI en botones, NI en el link de WA
+            if (event.target !== modalContent && !isNavButton && !isWhatsApp) {
+                closeModal();
+            }
+        }
+
+        // 6. Navegación por teclado y scroll
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById("imageModal").style.display === "block") {
+                if (e.key === "Escape") closeModal();
+                if (e.key === "ArrowRight") changeImg(1);
+                if (e.key === "ArrowLeft") changeImg(-1);
+            }
+        });
+
         window.onscroll = function() {
             const btn = document.getElementById("btn-top");
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) { btn.style.display = "flex"; } else { btn.style.display = "none"; }
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) { 
+                btn.style.display = "flex"; 
+            } else { 
+                btn.style.display = "none"; 
+            }
         };
     </script>
 </body>
