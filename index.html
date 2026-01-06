@@ -611,6 +611,12 @@
             });
 
             section.style.display = "block";
+
+            if (window.innerWidth < 768) {
+                setTimeout(() => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
         }
 
         // 4. Funciones del Modal
