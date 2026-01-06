@@ -121,9 +121,12 @@
         }
 
         .gallery-item img {
-            width: 100%; height: 300px; object-fit: cover;
-            border-radius: 15px; border: 4px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Esto obliga a que la imagen sea un cuadrado perfecto */
+            object-fit: cover;   /* Centra la foto y recorta los bordes sobrantes sin deformarla */
+            object-position: center;
+            border-radius: 12px; /* Unas esquinas redondeadas quedan muy bien con el estilo de Mica */
+            transition: transform 0.3s ease;
         }
 
         /* SECCIONES EXTRA (Testimonios y FAQ) */
@@ -237,10 +240,11 @@
         .footer-insta { display: inline-flex; align-items: center; gap: 8px; color: var(--rosa-fuerte); text-decoration: none; font-weight: 500; margin-bottom: 5px; }
 
         .cat-card.active {
-            background-color: var(--rosa-pastel);
+            background-color: var(--rosa-fuerte);
             color: white;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(169, 27, 96, 0.2);
+            border: 2px solid white;
+            transform: translateY(-5px) scale(1.02); /* Se eleva un poquito */
+            box-shadow: 0 10px 20px rgba(169, 27, 96, 0.2);
         }
 
         .cat-card.active i, .cat-card.active svg {
@@ -354,6 +358,32 @@
             cursor: pointer !important;
         }
 
+        .categories-container {
+            position: -webkit-sticky; /* Soporte para Safari */
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+            backdrop-filter: blur(8px); /* Desenfoque de fondo tipo iPhone */
+            padding: 15px 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--rosa-pastel);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Estilo para el botón cuando está ACTIVO */
+        .cat-btn.active {
+            background-color: var(--rosa-fuerte) !important;;
+            color: white !important;
+            border: 2px solid white;
+            font-weight: bold;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(169, 27, 96, 0.3);
+        }
+
 </style>
 </head>
 <body>
@@ -378,16 +408,16 @@
     </header>
 
     <div class="categories-grid">
-        <div class="cat-card" onclick="showGallery('carteles')"><i data-lucide="image"></i><h3>Marcos de selfie</h3></div>
-        <div class="cat-card" onclick="showGallery('props')"><i data-lucide="party-popper"></i><h3>Props para fotos</h3></div>
-        <div class="cat-card" onclick="showGallery('toppers')"><i data-lucide="cake"></i><h3>Toppers</h3></div>
-        <div class="cat-card" onclick="showGallery('banderines')"><i data-lucide="flag"></i><h3>Banderines</h3></div>
-        <div class="cat-card" onclick="showGallery('pochocoleras')"><i data-lucide="box"></i><h3>Pochocoleras</h3></div>
-        <div class="cat-card" onclick="showGallery('bolsitas')"><i data-lucide="shopping-bag"></i><h3>Bolsitas</h3></div>
-        <div class="cat-card" onclick="showGallery('guirnaldas')"><i data-lucide="sparkles"></i><h3>Guirnaldas</h3></div>
-        <div class="cat-card" onclick="showGallery('stickers')"><i data-lucide="smile"></i><h3>Stickers</h3></div>
-        <div class="cat-card" onclick="showGallery('tattoos')"><i data-lucide="palette"></i><h3>Tattoos</h3></div>
-        <div class="cat-card" onclick="showGallery('tarjetas')"><i data-lucide="id-card-lanyard"></i><h3>Tarjetas de invitación</h3></div>
+        <div class="cat-card" onclick="showGallery('marcos', this)"><i data-lucide="image"></i><h3>Marcos de selfie</h3></div>
+        <div class="cat-card" onclick="showGallery('props', this)"><i data-lucide="party-popper"></i><h3>Props para fotos</h3></div>
+        <div class="cat-card" onclick="showGallery('toppers', this)"><i data-lucide="cake"></i><h3>Toppers</h3></div>
+        <div class="cat-card" onclick="showGallery('banderines', this)"><i data-lucide="flag"></i><h3>Banderines</h3></div>
+        <div class="cat-card" onclick="showGallery('pochocoleras', this)"><i data-lucide="box"></i><h3>Pochocoleras</h3></div>
+        <div class="cat-card" onclick="showGallery('bolsitas', this)"><i data-lucide="shopping-bag"></i><h3>Bolsitas</h3></div>
+        <div class="cat-card" onclick="showGallery('guirnaldas', this)"><i data-lucide="sparkles"></i><h3>Guirnaldas</h3></div>
+        <div class="cat-card" onclick="showGallery('stickers', this)"><i data-lucide="smile"></i><h3>Stickers</h3></div>
+        <div class="cat-card" onclick="showGallery('tattoos', this)"><i data-lucide="palette"></i><h3>Tattoos</h3></div>
+        <div class="cat-card" onclick="showGallery('tarjetas', this)"><i data-lucide="id-card-lanyard"></i><h3>Tarjetas de invitación</h3></div>
     </div>
 
     <div id="gallery-section">
@@ -509,8 +539,8 @@
 
         // 2. Datos de los productos
         const stock = {
-            carteles: ["img/cartel1.png", "img/cartel2.png"],
-            props: ["img/props1.jpg"],
+            marcos: ["img/marcos-selfie/psicopedagogia.jpg","img/marcos-selfie/contador.jpg","img/marcos-selfie/ingenieria-industrial.jpg"],
+            props: ["img/props/ingenieria-industrial.jpg"],
             toppers: ["img/topper1.jpg"],
             banderines: ["img/banderin1.jpg"],
             pochocoleras: ["img/pochocolera1.jpg"],
@@ -523,7 +553,7 @@
         };
 
         const nombres = { 
-            carteles: "Marcos de Selfie", 
+            marcos: "Marcos de Selfie", 
             props: "Props para Fotos", 
             toppers: "Toppers para Tortas", 
             banderines: "Banderines 3D", 
@@ -536,33 +566,51 @@
             testimonios: "Experiencias de nuestros clientes"
         };
 
-        // 3. Función para mostrar la categoría seleccionada
-        function showGallery(cat) {
+        function showGallery(cat, elemento) {
             const section = document.getElementById('gallery-section');
             const content = document.getElementById('gallery-content');
             const waLink = document.getElementById('whatsapp-link');
             
-            // Guardamos los datos en las globales para que las flechas las encuentren
-            currentCatName = nombres[cat];
+            // 1. MARCAR LA TARJETA SELECCIONADA
+            // Quitamos la clase 'active' de todas las tarjetas (usando .cat-card)
+            document.querySelectorAll('.cat-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Marcamos la que el usuario tocó
+            if (elemento) {
+                elemento.classList.add('active');
+            } else {
+                // Por si la llamas por código sin el 'this'
+                const cardManual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
+                if (cardManual) cardManual.classList.add('active');
+            }
+
+            // 2. ACTUALIZAR DATOS
+            currentCatName = nombres[cat] || cat;
             currentImages = stock[cat] || [];
             
+            // 3. ACTUALIZAR TÍTULO Y WHATSAPP
             document.getElementById('gallery-title').innerText = currentCatName;
+            waLink.href = `https://wa.me/541141575016?text=${encodeURIComponent('¡Hola Mica! ✨ Consulto por: ' + currentCatName)}`;
+            
+            // 4. GENERAR CUADRÍCULA (Fotos Cuadradas)
             content.innerHTML = "";
             
-            // Botón de WhatsApp general de la sección
-            waLink.href = `https://wa.me/541141575016?text=${encodeURIComponent('¡Hola! Consulto por: ' + currentCatName)}`;
-            
-            // Generar las fotos en la cuadrícula
             currentImages.forEach((url, index) => {
                 const div = document.createElement('div');
                 div.className = 'gallery-item';
-                // IMPORTANTE: Aquí pasamos el index a openModal
-                div.innerHTML = `<img src="${url}" onclick="openModal(${index})" onerror="this.src='https://via.placeholder.com/300x400?text=Próximamente'" style="cursor: zoom-in;">`;
+                div.innerHTML = `
+                    <img src="${url}" 
+                        onclick="openModal(${index})" 
+                        alt="${currentCatName}"
+                        loading="lazy"
+                        onerror="this.src='https://via.placeholder.com/400x400?text=Próximamente'">
+                `;
                 content.appendChild(div);
             });
 
             section.style.display = "block";
-            section.scrollIntoView({ behavior: 'smooth' });
         }
 
         // 4. Funciones del Modal
