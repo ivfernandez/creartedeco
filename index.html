@@ -76,6 +76,12 @@
             /* Achicamos un poco el padding del contenedor cuando está en móvil */
             .categories-container {
                 position: relative;
+                margin-bottom: 5px !important;
+            }
+
+            .gallery-title { /* O como se llame tu clase del h2 "Marcos de Selfie" */
+                margin-top: 10px !important;
+                margin-bottom: 15px !important;
             }
 
             .categories-container::after {
@@ -143,6 +149,7 @@
         #gallery-section {
             background-color: rgba(255, 234, 219, 0.3);
             padding: 40px 20px;
+            padding-top: 0 !important;
             display: none;
             text-align: center;
             border-radius: 40px 40px 0 0;
@@ -328,8 +335,79 @@
             transform: translateY(-50%) scale(1.1); /* Mantiene el centrado al agrandarse */
         }
 
+        .header-slogan {
+            font-style: italic;
+            font-size: 1.0rem;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .header-slogan i {
+            width: 14px;
+            height: 14px;
+            color: var(--rosa-fuerte);
+            fill: var(--rosa-fuerte);
+        }
+
         /* AJUSTE ESPECÍFICO PARA CELULARES */
         @media (max-width: 600px) {
+
+            header {
+                display: flex;
+                flex-direction: column; /* Alinea todo uno abajo del otro */
+                align-items: center;    /* Centra horizontalmente */
+                text-align: center;
+                padding: 15px 10px 5px 10px !important;
+            }
+
+            .header-slogan {
+                font-size: 0.8rem; /* Más chico para que no haga tantas líneas */
+                margin: 5px 15px; /* Menos espacio arriba/abajo y margen a los costados */
+                line-height: 1.2;
+            }
+            
+            .header-slogan i {
+                width: 12px;
+                height: 12px;
+            }
+
+            .insta-header {
+                display: flex !important;
+                justify-content: center !important;
+                margin: 5px auto !important;
+                position: static;
+                top: 10px;
+                right: 15px;
+                font-size: 0.7rem;
+            }
+
+            .insta-header svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* Reducimos el logo (suponiendo que usas una clase .logo o img) */
+            .logo-container { /* Ajustá a tu clase real */
+                max-width: 70px !important; /* Más chico para ganar pantalla */
+                margin: 0 auto 5px auto !important;
+                display: block;
+            }
+
+            /* El eslogan de Mica lo hacemos más chiquito o incluso podemos ocultarlo */
+            .header-slogan {
+                font-size: 0.8rem !important;
+                margin: 0 auto 10px auto !important;
+                max-width: 90%; /* Para que no toque los bordes del celu */
+            }
+
+            /* La línea de puntos también puede estar más cerca */
+            .divider-dots {
+                margin-bottom: 5px !important;
+            }
+
             .nav-btn {
                 width: 42px; /* Un poquito más chicas para no invadir tanto */
                 height: 42px;
@@ -460,15 +538,13 @@
     </div>
 
     <header id="top">
+        <div class="logo-container"><img src="img/logo.png" alt="Crearte Deco"></div>
+        <p class="header-slogan">
+            Papelería creativa personalizada para hacer tus eventos más lindos by Mica 
+        </p>
         <a href="https://www.instagram.com/creartedeco.mg" class="insta-header" target="_blank">
             <i data-lucide="instagram" style="width: 18px; height: 18px;"></i>
-            Instagram
         </a>
-        <div class="logo-container"><img src="img/logo.png" alt="Crearte Deco"></div>
-        <p style="font-style: italic; font-size: 1.0rem; margin: 10px 0;">
-            Papelería creativa personalizada para hacer tus eventos más lindos by Mica 
-            <i data-lucide="heart" style="width: 14px; height: 14px; color: var(--rosa-fuerte); fill: var(--rosa-fuerte); display: inline-block; vertical-align: middle; margin-left: 2px;"></i>
-        </p>
     </header>
 
     <div class="categories-container">
@@ -677,12 +753,6 @@
             });
 
             section.style.display = "block";
-
-            if (window.innerWidth < 768) {
-                setTimeout(() => {
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
-            }
         }
 
         // 4. Funciones del Modal
