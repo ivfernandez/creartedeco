@@ -60,22 +60,26 @@
 
         /* --- GRID PARA DESKTOP --- */
         .categories-grid {
-            max-width: 1200px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            padding: 20px; /* Padding generoso cuando está arriba */
-            transition: all 0.3s ease;
+            /* Cambiamos de 5 columnas a 10 para que sea una sola fila */
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 8px; /* Reducimos el espacio entre botones */
+            padding: 10px 20px;
+            max-width: 1300px; /* Un poco más ancho para que no se amontonen */
+            margin: 0 auto;
         }
 
         @media (max-width: 1024px) { .categories-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 600px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .categories-grid { grid-template-columns: repeat(2, 1fr); } }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             /* Achicamos un poco el padding del contenedor cuando está en móvil */
             .categories-container {
-                position: relative;
+                position: -webkit-sticky !important;
+                position: sticky !important;
+                top: 0; /* Solo se pega en el celu */
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(8px);
                 margin-bottom: 5px !important;
             }
 
@@ -98,8 +102,10 @@
             
             /* Achicamos las tarjetas para que no roben tanta pantalla */
             .cat-card {
-                padding: 10px;
-                font-size: 0.8rem;
+                padding: 8px 5px; /* Más bajitos */
+                flex-direction: column; /* Icono arriba, texto abajo */
+                min-height: 70px;
+                justify-content: center;
             }
         }
 
@@ -115,22 +121,22 @@
 
         .cat-card {
             background: var(--blanco);
-            padding: 12px 10px; 
+            padding: 8px 5px; 
             border-radius: 15px;
             border: 2px solid var(--rosa-pastel);
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 3px 0 var(--rosa-pastel);
             display: flex;
-            flex-direction: row; 
+            flex-direction: column; 
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 50px;
+            min-height: 70px;
         }
 
         .cat-card i { width: 18px; height: 18px; flex-shrink: 0; }
-        .cat-card h3 { font-size: 1.1rem; font-weight: 500; margin: 0; text-align: center; }
+        .cat-card h3 { font-size: 1rem; font-weight: 500; margin-top: 2px; text-align: center; }
 
         .cat-card i, .cat-card svg { 
             stroke: var(--rosa-fuerte) !important; /* Lucide usa 'stroke' para el color, no 'color' */
@@ -286,7 +292,6 @@
             background-color: var(--rosa-fuerte);
             color: white;
             border: 2px solid white;
-            transform: translateY(-5px) scale(1.02); /* Se eleva un poquito */
             box-shadow: 0 10px 20px rgba(169, 27, 96, 0.2);
         }
 
@@ -474,14 +479,14 @@
 
         /* --- CONTENEDOR PRINCIPAL STICKY --- */
         .categories-container {
-            position: -webkit-sticky;
-            position: sticky;
+            position: relative;
             top: 0;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
             border-bottom: 2px solid var(--rosa-pastel);
             transition: all 0.3s ease; /* Para que el cambio al bajar sea suave */
+            width: 100%;
         }
 
         /* Estilo para el botón cuando está ACTIVO */
@@ -523,7 +528,78 @@
             .cat-card i, .cat-card svg { 
                 width: 16px !important; 
                 height: 16px !important; 
+         
             }
+        }
+
+        /* --- ESTILO DE SUB-CATEGORÍAS (PILLS) --- */
+        .sub-filter-container {
+            display: none; /* Se activa por JS solo cuando hay subcategorías */
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 20px auto 30px auto;
+            padding: 10px;
+            max-width: 100%;
+        }
+
+        .sub-filter-btn {
+            background-color: white;
+            color: var(--rosa-fuerte);
+            border: 2px solid var(--rosa-pastel);
+            padding: 8px 20px;
+            border-radius: 50px; /* Forma de pastilla */
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 0 var(--rosa-pastel);
+            white-space: nowrap;
+        }
+
+        .sub-filter-btn:hover {
+            background-color: #fffafc;
+            transform: translateY(-2px);
+        }
+
+        .sub-filter-btn.active {
+            background-color: var(--rosa-fuerte);
+            color: white;
+            border-color: var(--rosa-fuerte);
+            box-shadow: 0 4px 10px rgba(169, 27, 96, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Ajuste para que en celulares no se amontonen */
+        @media (max-width: 768px) {
+            .sub-filter-container {
+                justify-content: flex-start; /* Se alinean a la izquierda para el scroll */
+                overflow-x: auto; /* Permite scroll lateral si hay muchos filtros */
+                -webkit-overflow-scrolling: touch;
+                padding-left: 20px;
+                padding-right: 20px;
+                scrollbar-width: none; /* Esconde barra en Firefox */
+            }
+            
+            .sub-filter-container::-webkit-scrollbar {
+                display: none; /* Esconde barra en Chrome/Safari */
+            }
+
+            .sub-filter-btn {
+                padding: 6px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        #caption {
+            width: 90%;
+            max-width: 600px;
+            margin: 15px auto;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            line-height: 1.4;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Para que se lea bien sobre cualquier fondo */
         }
 
 </style>
@@ -564,6 +640,7 @@
 
     <div id="gallery-section">
         <h2 id="gallery-title" style="color: var(--rosa-fuerte);">Galería</h2>
+        <div id="sub-filter-container" class="sub-filter-container"></div>
         <div class="gallery-container" id="gallery-content"></div>
         <a href="#" id="whatsapp-link" style="background-color: var(--whatsapp); color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 500; display: inline-block; margin-top: 15px;">Consultar por este producto</a>
     </div>
@@ -683,8 +760,13 @@
         const stock = {
             marcos: ["img/marcos-selfie/psicopedagogia.jpg","img/marcos-selfie/contador.jpg","img/marcos-selfie/ingenieria-industrial.jpg"],
             props: ["img/props/ingenieria-industrial.jpg"],
-            toppers: ["img/topper1.jpg"],
-            banderines: ["img/banderin1.jpg"],
+            toppers: [
+                { src: "img/toppers/tortas/mickey.jpg", tag: "tortas" },
+                { src: "img/toppers/tortas/ingenieria-industrial.jpg", tag: "tortas" },
+                { src: "img/toppers/cupcakes/padel.jpg", tag: "cupcakes" },
+                { src: "img/toppers/cupcakes/banfield.jpg", tag: "cupcakes" },
+            ],
+            banderines: ["img/banderines/padel.jpg","img/banderines/me-recibi.jpg"],
             pochocoleras: ["img/pochocolera1.jpg"],
             bolsitas: ["img/bolsita1.jpg"],
             guirnaldas: ["img/guirnalda1.jpg"],
@@ -697,7 +779,7 @@
         const nombres = { 
             marcos: "Marcos de Selfie", 
             props: "Props para Fotos", 
-            toppers: "Toppers para Tortas", 
+            toppers: "Toppers", 
             banderines: "Banderines 3D", 
             pochocoleras: "Pochocoleras", 
             bolsitas: "Bolsitas Golosineras", 
@@ -708,51 +790,107 @@
             testimonios: "Experiencias de nuestros clientes"
         };
 
+        const etiquetasNombres = {
+            "todos": "Todos",
+            "tortas": "Para Tortas",
+            "cupcakes": "Para Cupcakes"
+        };
+
         function showGallery(cat, elemento) {
+            // 1. Referencias a elementos
             const section = document.getElementById('gallery-section');
             const content = document.getElementById('gallery-content');
+            const subFilterDiv = document.getElementById('sub-filter-container'); // Asegurate que el ID coincida en tu HTML
             const waLink = document.getElementById('whatsapp-link');
-            
-            // 1. MARCAR LA TARJETA SELECCIONADA
-            // Quitamos la clase 'active' de todas las tarjetas (usando .cat-card)
-            document.querySelectorAll('.cat-card').forEach(card => {
-                card.classList.remove('active');
-            });
+            const title = document.getElementById('gallery-title');
 
-            // Marcamos la que el usuario tocó
+            // 2. Guardar categoría actual para usarla en los filtros
+            currentCategory = cat; 
+            currentCatName = nombres[cat] || cat;
+            const items = stock[cat] || [];
+
+            // 3. UI: Marcar la tarjeta del menú como activa
+            document.querySelectorAll('.cat-card').forEach(card => card.classList.remove('active'));
             if (elemento) {
                 elemento.classList.add('active');
             } else {
-                // Por si la llamas por código sin el 'this'
                 const cardManual = document.querySelector(`.cat-card[onclick*="'${cat}'"]`);
                 if (cardManual) cardManual.classList.add('active');
             }
 
-            // 2. ACTUALIZAR DATOS
-            currentCatName = nombres[cat] || cat;
-            currentImages = stock[cat] || [];
+            // 4. Lógica de Sub-categorías (Filtros dinámicos)
+            subFilterDiv.innerHTML = ""; // Limpiamos filtros anteriores
             
-            // 3. ACTUALIZAR TÍTULO Y WHATSAPP
-            document.getElementById('gallery-title').innerText = currentCatName;
+            // Buscamos si hay tags en los items de esta categoría
+            const tagsUnicos = [...new Set(items.filter(i => i.tag).map(i => i.tag))];
+
+            if (tagsUnicos.length > 0) {
+                // Creamos botón "Todos"
+                const btnTodos = document.createElement('button');
+                btnTodos.className = 'sub-filter-btn active';
+                btnTodos.innerText = 'Todos';
+                btnTodos.onclick = (e) => filterSub('todos', e.target);
+                subFilterDiv.appendChild(btnTodos);
+
+                // Creamos un botón por cada tag encontrado
+                tagsUnicos.forEach(tag => {
+                    const btn = document.createElement('button');
+                    btn.className = 'sub-filter-btn';
+                    // Usamos el nombre lindo si existe, sino el tag tal cual
+                    btn.innerText = etiquetasNombres[tag] || (tag.charAt(0).toUpperCase() + tag.slice(1));
+                    btn.onclick = (e) => filterSub(tag, e.target);
+                    subFilterDiv.appendChild(btn);
+                });
+                subFilterDiv.style.display = 'flex';
+            } else {
+                subFilterDiv.style.display = 'none';
+            }
+
+            // 5. Actualizar Título y WhatsApp
+            title.innerText = currentCatName;
             waLink.href = `https://wa.me/541141575016?text=${encodeURIComponent('¡Hola Mica! ✨ Consulto por: ' + currentCatName)}`;
-            
-            // 4. GENERAR CUADRÍCULA (Fotos Cuadradas)
+
+            // 6. Mostrar sección y renderizar fotos
+            section.style.display = 'block';
+            renderPhotos(items);
+        }
+
+        function createFilterBtn(tag, isActive) {
+            const btn = document.createElement('button');
+            btn.className = `sub-filter-btn ${isActive ? 'active' : ''}`;
+            btn.innerText = etiquetasNombres[tag] || tag;
+            btn.onclick = (e) => filterSub(tag, e.target);
+            document.getElementById('sub-filter-container').appendChild(btn);
+        }
+
+        function renderPhotos(images) {
+            const content = document.getElementById('gallery-content');
             content.innerHTML = "";
             
-            currentImages.forEach((url, index) => {
-                const div = document.createElement('div');
-                div.className = 'gallery-item';
-                div.innerHTML = `
-                    <img src="${url}" 
-                        onclick="openModal(${index})" 
-                        alt="${currentCatName}"
-                        loading="lazy"
-                        onerror="this.src='https://via.placeholder.com/400x400?text=Próximamente'">
-                `;
-                content.appendChild(div);
-            });
+            // IMPORTANTE: actualizamos la lista global con las fotos que se están viendo
+            currentImages = images; 
 
-            section.style.display = "block";
+            images.forEach((imgData, index) => {
+                const imgSrc = typeof imgData === 'string' ? imgData : imgData.src;
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                // Aquí pasamos el index de la lista actual (la filtrada)
+                item.innerHTML = `<img src="${imgSrc}" onclick="openModal(${index})">`;
+                content.appendChild(item);
+            });
+        }
+
+        function filterSub(tag, btnElemento) {
+            document.querySelectorAll('.sub-filter-btn').forEach(b => b.classList.remove('active'));
+            btnElemento.classList.add('active');
+
+            const allItems = stock[currentCategory];
+            if (tag === 'todos') {
+                renderPhotos(allItems);
+            } else {
+                const filtrados = allItems.filter(img => img.tag === tag);
+                renderPhotos(filtrados);
+            }
         }
 
         // 4. Funciones del Modal
@@ -778,39 +916,39 @@
         }
 
         function updateModal() {
-            const url = currentImages[currentIndex];
-            const imgElement = document.getElementById("imgAmpliada");
-            const captionElement = document.getElementById("caption");
+            const imgAmpliada = document.getElementById("imgAmpliada");
+            const captionText = document.getElementById("caption");
             const waShare = document.getElementById("wa-share");
 
-            imgElement.classList.remove('fade-in');
-            imgElement.src = url;
-            
-            const contador = `(${currentIndex + 1}/${currentImages.length})`;
-            captionElement.innerText = `${currentCatName} ${contador}`;
+            const imgData = currentImages[currentIndex];
+            const imgSrc = typeof imgData === 'string' ? imgData : imgData.src;
 
-            // --- LÓGICA DE BOTÓN DINÁMICO ---
-            if (currentCatName === nombres.testimonios) {
-                // Estilo para TESTIMONIOS (Más emocional)
-                waShare.style.background = "#e91e63"; // Un rosa más vibrante/corazón
-                waShare.innerHTML = `<i data-lucide="heart"></i> ¡Quiero algo así para mi evento!`;
-                
-                const msg = `¡Hola Mica! ✨ Vi las fotos de tus clientes en la web y me encantaron. Me gustaría consultarte para armar un pedido personalizado para un evento...`;
-                waShare.href = `https://wa.me/541141575016?text=${encodeURIComponent(msg)}`;
-            } else {
-                // Estilo para PRODUCTOS (Consulta técnica)
-                waShare.style.background = "#25d366"; // Verde WhatsApp estándar
-                waShare.innerHTML = `<i data-lucide="message-circle"></i> Consultar por esta foto`;
-                
-                const urlAbsoluta = window.location.origin + window.location.pathname.replace('index.html', '') + url;
-                const msg = `¡Hola Mica! ✨ Me gustó este trabajo de "${currentCatName}" que vi en tu catálogo web: ${urlAbsoluta}`;
-                waShare.href = `https://wa.me/541141575016?text=${encodeURIComponent(msg)}`;
+            // --- LÓGICA DE TEXTO DINÁMICO ---
+            // Si tiene tag (ej: 'tortas'), lo ponemos lindo. Si no, queda vacío.
+            let subCatText = "";
+            if (imgData.tag) {
+                const nombreLindo = etiquetasNombres[imgData.tag] || imgData.tag;
+                subCatText = ` <span style="color: var(--rosa-pastel);">»</span> ${nombreLindo}`;
             }
 
-            // Reiniciar animación y refrescar íconos de Lucide
-            void imgElement.offsetWidth; 
-            imgElement.classList.add('fade-in');
-            lucide.createIcons();
+            // Actualizamos el caption con alineación centrada
+            captionText.style.textAlign = "center"; // Aseguramos el centrado por JS
+            captionText.innerHTML = `
+                <div style="margin-bottom: 5px; font-weight: 600;">
+                    ${currentCatName}${subCatText}
+                </div>
+                <div style="font-size: 0.85rem; opacity: 0.8;">
+                    Imagen ${currentIndex + 1} de ${currentImages.length}
+                </div>
+            `;
+
+            // --- IMAGEN Y WHATSAPP ---
+            imgAmpliada.src = imgSrc;
+            
+            // El mensaje de WhatsApp ahora es más específico
+            const textoSub = imgData.tag ? ` (${etiquetasNombres[imgData.tag] || imgData.tag})` : "";
+            const mensajeWA = encodeURIComponent(`¡Hola Mica! ✨ Me gustó esta opción de ${currentCatName}${textoSub}: ${window.location.origin}/${imgSrc}`);
+            waShare.href = `https://wa.me/541141575016?text=${mensajeWA}`;
         }
 
         function closeModalOnOutsideClick(event) {
@@ -873,8 +1011,8 @@
 
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('.categories-container');
-            // Si bajamos más de 150px, agregamos la clase 'is-sticky'
-            if (window.scrollY > 150) {
+            // Solo aplicamos la clase si estamos en mobile (ancho menor a 768px)
+            if (window.innerWidth <= 768 && window.scrollY > 100) {
                 nav.classList.add('is-sticky');
             } else {
                 nav.classList.remove('is-sticky');
