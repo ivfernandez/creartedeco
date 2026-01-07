@@ -765,10 +765,21 @@
                 { src: "img/toppers/tortas/ingenieria-industrial.jpg", tag: "tortas" },
                 { src: "img/toppers/cupcakes/padel.jpg", tag: "cupcakes" },
                 { src: "img/toppers/cupcakes/banfield.jpg", tag: "cupcakes" },
+                { src: "img/toppers/cupcakes/spidey.jpg", tag: "cupcakes" },
             ],
-            banderines: ["img/banderines/padel.jpg","img/banderines/me-recibi.jpg"],
-            pochocoleras: ["img/pochocolera1.jpg"],
-            bolsitas: ["img/bolsita1.jpg"],
+            banderines: [
+                { src: "img/banderines/simples/hulk-spidey.jpg", tag: "simples" },
+                { src: "img/banderines/triangulares/padel.jpg", tag: "triangulares" },
+                { src: "img/banderines/3D/padel.jpg", tag: "3D" },
+                { src: "img/banderines/3D/me-recibi.jpg", tag: "3D" }
+            ],
+            pochocoleras: ["img/pochocleras/my-little-pony.jpg","img/pochocleras/mickey.jpg",
+                           "img/pochocleras/kitty.jpg", "img/pochocleras/river.jpg" ],
+            bolsitas: [
+                { src: "img/bolsitas/cajita-mc/my-little-pony.jpg", tag: "cajitamc" },
+                { src: "img/bolsitas/cajita-mc/mickey.jpg", tag: "cajitamc" },
+                { src: "img/bolsitas/simples/river.jpg", tag: "simples" },
+            ],
             guirnaldas: ["img/guirnalda1.jpg"],
             stickers: ["img/stickers1.jpg"],
             tattoos: ["img/tattoos1.jpg"],
@@ -780,7 +791,7 @@
             marcos: "Marcos de Selfie", 
             props: "Props para Fotos", 
             toppers: "Toppers", 
-            banderines: "Banderines 3D", 
+            banderines: "Banderines", 
             pochocoleras: "Pochocoleras", 
             bolsitas: "Bolsitas Golosineras", 
             guirnaldas: "Guirnaldas Decorativas", 
@@ -793,7 +804,11 @@
         const etiquetasNombres = {
             "todos": "Todos",
             "tortas": "Para Tortas",
-            "cupcakes": "Para Cupcakes"
+            "cupcakes": "Para Cupcakes",
+            "3D": "3D",
+            "simples": "Simples",
+            "triangulares": "Triangulares",
+            "cajitamc": "Cajita mc"
         };
 
         function showGallery(cat, elemento) {
